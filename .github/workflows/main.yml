@@ -42,23 +42,7 @@ jobs:
       - name: Hide sensitive inputs
         uses: levibostian/action-hide-sensitive-inputs@v1
 
-      - name: Validate IPA URL
-        run: |
-          curl -L -o sample.ipa "${{ inputs.ipa_url }}" > /dev/null 2>&1
-          file_type=$(file --mime-type -b sample.ipa)
-      
-          if [[ "$file_type" != "application/x-ios-app" && "$file_type" != "application/zip" ]]; then
-            echo "::error::Validation failed: The file is not a valid IPA file. Detected MIME type: $file_type."
-            exit 1
-          fi
-      
-          
-          unzip -t sample.ipa > /dev/null 2>&1
-          if [[ $? -ne 0 ]]; then
-            echo "::error::Validation failed: The file is not a valid ZIP archive."
-            exit 1
-          fi
-
+     
       - name: Install Dependencies
         run: brew install make ldid
 
